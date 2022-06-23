@@ -11,5 +11,10 @@
         <module name="section2-week3.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="section2-week3" target="11" />
+      <module name="section2-week3.main" target="11" />
+      <module name="section2-week3.test" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

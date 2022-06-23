@@ -1,0 +1,72 @@
+1. @RestController
+
+Spring MVC에서는 특정 클래스에 @RestController 를 추가하면 해당 클래스가 REST API의 리소스(자원, Resource)를 처리하기 위한 API 엔드포인트로 동작함을 정의합니다.
+또한 @RestController 가 추가된 클래스는 애플리케이션 로딩 시, Spring Bean으로 등록해줍니다.
+
+2. @RequestMapping
+
+@RequestMapping 은 클라이언트의 요청과 클라이언트 요청을 처리하는 핸들러 메서드(Handler Method)를 매핑해주는 역할을 합니다.
+@RequestMapping 은 Controller 클래스 레벨에 추가하여 클래스 전체에 사용되는 공통 URL(Base URL) 설정을 합니다.
+
+
+
+3. MemberController에 추가된 코드 설명
+ 1). 클래스 레벨의 @RequestMapping에 추가된 항목
+   - [POST]을 이용해 서버에 회원 정보를 등록해주는 메서드
+   - produces
+    produces 애트리뷰트(Attribute)는 응답 데이터를 어떤 미디어 타입으로 클라이언트에게 전송할 지를 설정합니다.
+    여기서는 JSON 형식의 데이터를 응답 데이터로 전송하겠다는 의미로 MediaType.APPLICATION_JSON_VALUE 값을 설정했습니다.
+    이 값을 설정하지 않으면 현재 코드에서는 JSON 형식의 데이터를 응답으로 전송하지 않고, 문자열 자체를 전송합니다.
+
+4. postMember() 메서드
+ 1). postMember() 메서드는 회원 정보를 등록해주는 핸들러 메서드
+ 2). @postMapping
+  - @PostMapping 은 클라이언트의 요청 데이터(request body)를 서버에 생성할 때 사용하는 애너테이션이며,
+    클라이언트 쪽에서 요청 전송 시, HTTP Method 타입을 동일하게 맞춰주어야 합니다.d
+
+ 3). @RequestParam
+  - @RequestParam은 핸들러 메서드의 파라미터 종류 중 하나
+  - 주로 클라이언트 쪽에서 전송하는 요청 데이터를 쿼리 파라미터(Query Parmeter 또는 Query String), 폼 데이터(form-data),
+    x-www-form-urlencoded 형식으로 전송하면 이를 서버 쪽에서 전달 받을 때 사용하는 애너테이션
+
+ 4). 리턴값은 응답 문자열에 맞는 JSON형식으로 해주어야됨
+
+5. getMember() 메서드
+ 1). @GetMapping
+  - 클라이언트가 서버에 리소스를 조회할 때 사용하는 애너테이션
+  - 애너테이션의 괄호 안에는 몇 가지 애트리뷰트(Attribute), 전체 HTTP URI의 일부 지정가능
+  - 이 URI는 클래스 레벨의 @RequestMapping에 설정된 URI와 @GetMapping에 설정한 URI가 합쳐진 형태
+
+ 2). @PathVariable
+  - 핸들러 메서드의 파라미터
+  - 괄호 안에 입력한 문자열 값은 @GetMapping("/{member-id}") 처럼 중괄호({ }) 안의 문자열과 동일
+
+ 3). [GET]을 통해서 서버의 회원을 클라이언트에게 제공하는 메서드 핸들러
+
+6. GetMembers() 메서드
+ 1). [GET] 을 통해 회원들 정보를 요청하는 데이터
+
+
+[Extra]
+1). 쿼리 파라미터(Query Parameter)
+  - 요청 URL에서 ‘?’를 기준으로 붙는 key/value 쌍의 데이터
+
+=============================================================================
+
+수정 이후
+
+1. @RequestMapping의 produces 애트리뷰트 생략
+ - Map 객체를 리턴하게 되면 내부적으로 ‘이 데이터는 JSON 형식의 응답 데이터로 변환해야 되는구나’라고
+   이해하고 JSON 형식으로 자동 변환
+
+2. 리턴 값으로 JSON 문자열을 리턴하던 부분이 ResponseEntity 객체를 리턴
+ - new ResponseEntity<>(map, HttpStatus.CREATED); 처럼 ResponseEntity 객체를 생성하면서
+   생성자 파라미터로 응답 데이터(map)와 HTTP 응답 상태를 함께 전달
+ - ResponseEntity 객체로 응답 데이터를 래핑함으로써 조금 더 세련된 방식으로 응답 데이터를 생성(그냥 map으로 보내도됨)
+
+
+
+[Extra]
+
+1). ResponseEntity
+ - https://itvillage.tistory.com/44
