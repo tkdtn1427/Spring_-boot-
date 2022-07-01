@@ -1,6 +1,5 @@
 package com.codestates.order.controller;
 
-import com.codestates.coffee.entity.Coffee;
 import com.codestates.coffee.service.CoffeeService;
 import com.codestates.order.entity.Order;
 import com.codestates.order.service.OrderService;
@@ -37,37 +36,32 @@ public class OrderController {
     public ResponseEntity postOrder(@Valid @RequestBody OrderPostDto orderPostDto) {
         Order order =
                 orderService.createOrder(mapper.orderPostDtoToOrder(orderPostDto));
-        List<Coffee> coffees = coffeeService.findOrderedCoffees(order);
-        return new ResponseEntity<>(mapper.orderToOrderResponseDto(order, coffees),
-                HttpStatus.CREATED);
+
+        // (1) 주문한 커피 정보를 가져오도록 수정
+        return new ResponseEntity<>(mapper.orderToOrderResponseDto(coffeeService, order), HttpStatus.CREATED);
     }
 
     @GetMapping("/{order-id}")
-    public ResponseEntity getOrder(@PathVariable("order-id") @Positive long orderId) {
+    public ResponseEntity getOrder(@PathVariable("order-id") @Positive long orderId){
         Order order = orderService.findOrder(orderId);
-        List<Coffee> coffees = coffeeService.findOrderedCoffees(order);
-        return new ResponseEntity<>(mapper.orderToOrderResponseDto(order, coffees),
-                HttpStatus.OK);
+
+        // (2) 주문한 커피 정보를 가져오도록 수정
+        return new ResponseEntity<>(mapper.orderToOrderResponseDto(coffeeService, order), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity getOrders() {
         List<Order> orders = orderService.findOrders();
 
+        // (3) 주문한 커피 정보를 가져오도록 수정
         List<OrderResponseDto> response =
-                orders
-                    .stream()
-                    .map(order -> {
-                        List<Coffee> coffees = coffeeService.findOrderedCoffees(order);
-                        return mapper.orderToOrderResponseDto(order, coffees);
-                    })
-                    .collect(Collectors.toList());
+                orders.stream().map(order -> mapper.orderToOrderResponseDto(coffeeService, order)).collect(Collectors.toList());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{order-id}")
-    public ResponseEntity cancelOrder(@PathVariable("order-id") @Positive long orderId) {
+    public ResponseEntity cancelOrder(@PathVariable("order-id") @Positive long orderId){
         orderService.cancelOrder(orderId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
