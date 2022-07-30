@@ -1,9 +1,17 @@
 package com.example.demo.filter;
 
+import com.example.demo.model.Member;
+import com.example.demo.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.servlet.*;
 import java.io.IOException;
+import java.util.Optional;
 
 public class FirstFilter implements Filter {
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

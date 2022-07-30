@@ -1,0 +1,30 @@
+#spring:
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2
+#  datasource:
+#    url: jdbc:h2:mem:test
+#  jpa:
+#    hibernate:
+#      ddl-auto: create  # (1) 스키마 자동 생성
+#    show-sql: true      # (2) SQL 쿼리 출력
+#    properties:
+#      hibernate:
+#        format_sql: true  # (3) SQL pretty print
+#  sql:
+#    init:
+#      data-locations: classpath*:db/h2/data.sql
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        orm:
+#          jpa: DEBUG
+#server:
+#  servlet:
+#    encoding:
+#      force-response: true
+
+# 일반적으로 애플리케이션 실행 환경에 상관없는 공통 정보들은 application.yml에 설정할 수 있습니다.
+# 현재는 비어있는 상태입니다.

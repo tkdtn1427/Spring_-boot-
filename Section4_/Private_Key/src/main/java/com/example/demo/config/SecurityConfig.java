@@ -1,5 +1,7 @@
 package com.example.demo.config;
 
+import com.example.demo.filter.FirstFilter;
+import com.example.demo.filter.SecondFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,8 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
+//@EnableWebSecurity(debug = true)     // 시큐리티 필터 체인들을 볼 수 있음
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
@@ -19,6 +23,7 @@ public class SecurityConfig {
         http.csrf().disable();
         http.headers().frameOptions().disable();
 
+//        http.addFilterBefore(new FirstFilter(), LogoutFilter.class);   //해당 필터전에 어떤 필터를 적용시킬 수 있음
         http.authorizeRequests()
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")

@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import com.example.demo.model.Member;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;

@@ -9,6 +9,7 @@ public class Config {
     @Bean
     public FilterRegistrationBean<FirstFilter> firstFilterRegister()  {
         FilterRegistrationBean<FirstFilter> registrationBean = new FilterRegistrationBean<>(new FirstFilter());
+        registrationBean.setOrder(1);
         return registrationBean;
     }
 
